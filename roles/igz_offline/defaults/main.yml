@@ -84,4 +84,3 @@ downloads:
   k8s-device-plugin:
     repo: "nvidia/k8s-device-plugin"
     tag: "1.0.0-beta"
-  
