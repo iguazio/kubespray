@@ -13,10 +13,17 @@ bin_dir: /usr/local/bin
 
 
 ## External LB example config
+{%  if apiserver_vip %}
+apiserver_loadbalancer_domain_name: "{{ apiserver_vip['domain_name'] }}"
+loadbalancer_apiserver:
+  address: {{ apiserver_vip['ip_address'] }}
+  port: {{ apiserver_vip['port'] }}
+{% else %}
 ## apiserver_loadbalancer_domain_name: "elb.some.domain"
 #loadbalancer_apiserver:
 #  address: 1.2.3.4
 #  port: 1234
+{% endif %}
 
 ## Internal loadbalancers for apiservers
 #loadbalancer_apiserver_localhost: true

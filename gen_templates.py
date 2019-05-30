@@ -62,21 +62,22 @@ def get_servers(ips, user, password):
         yield ServerHost(mgmt_ip, user, password, data_ip, has_etcd=is_master, is_master=is_master)
 
 
-def gen(servers, clients):
+def gen(servers, clients, apiserver_vip):
     shutil.copytree('inventory/sample/group_vars', 'inventory/igz/group_vars')
     cmd = ['python3', 'contrib/inventory_builder/inventory.py']
     cmd.extend(s.mgmt_ip for s in servers)
     subprocess.check_output(cmd, env={'CONFIG_FILE': 'inventory/igz/hosts.ini'})
 
     logging.info('generating template files')
-    _gen_templates(path='inventory/igz/hosts.ini', servers=servers, clients=clients)
+    _gen_templates(path='inventory/igz/hosts.ini', servers=servers, clients=clients, apiserver_vip=apiserver_vip)
+    _gen_templates(path='inventory/igz/group_vars/all/all.yml', servers=servers, clients=clients, apiserver_vip=apiserver_vip)
 
 
-def from_cli(servers, clients, user, password):
+def from_cli(servers, clients, user, password, apiserver_vip):
     servers = list(get_servers(servers, user, password))
     if servers:
         clients = [ClientNode(ip, user, password) for ip in clients]
     else:
         clients = []
 
-    gen(servers, clients)
+    gen(servers, clients, apiserver_vip)
