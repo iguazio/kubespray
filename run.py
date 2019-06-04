@@ -73,7 +73,9 @@ def main():
     args = cli_parser()
     servers = [(mgmt, data) for mgmt, data, _ in args.servers]
     gen_templates.from_cli(servers, args.clients, args.user, args.password, args.apiserver_vip)
-    servers_supp_ips = [supp_ip for _, _, supp_ip in args.servers] if args.apiserver_vip is None or 'ip_address' not in args.apiserver_vip else [args.apiserver_vip['ip_address']]
+    servers_supp_ips = [supp_ip for _, _, supp_ip in args.servers]
+    if args.apiserver_vip and 'ip_address' in args.apiserver_vip:
+        servers_supp_ips.append(args.apiserver_vip['ip_address'])
     run(args.reset, servers_supp_ips)
 
 
