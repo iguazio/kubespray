@@ -32,7 +32,7 @@ node('kubespray') {
     stage('save to nas') {
         try {
             common.shell(['mkdir', '-p', nas_dir])
-            sh("docker save ${img_name} | gzip -9 > ${nas_image})
+            sh("docker save ${img_name} | gzip -9 > ${nas_image}")
         } finally {
             common.shell(['docker', 'rmi', image.id])
         }
