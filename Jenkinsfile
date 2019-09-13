@@ -1,5 +1,4 @@
-@Library('pipelinex@development')
-import com.iguazio.pipelinex.DockerRepo
+@Library('pipelinex@development') _
 
 properties([
     buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '30', numToKeepStr: '1000')),
@@ -22,6 +21,7 @@ node('kubespray') {
         withCredentials([string(credentialsId: 'sudo_password', variable: 'sudo_password')]) {
             common.shell(['./prepare_offline_version.sh', env.sudo_password])
         }
+
         return docker.build(img_name, '--file igz_Dockerfile .')
     }
 
