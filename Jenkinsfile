@@ -28,12 +28,12 @@ node('kubespray') {
 
     def rel_dir = "build_by_hash/kubespray/${env.kubespray_hash}/pkg/kubespray"
     def nas_dir = "/mnt/nas/${rel_dir}"
-    def output_name = 'kubespray.tar.gz'
+    def output_name = 'kubespray.tar.bz2'
     def nas_image = "${nas_dir}/${output_name}"
     stage('save to nas') {
         try {
             common.shell(['mkdir', '-p', nas_dir])
-            sh("docker save ${img_name} | gzip -9 > ${nas_image}")
+            sh("docker save ${img_name} | bzip2 -9 > ${nas_image}")
         } finally {
             common.shell(['docker', 'rmi', image.id])
         }
