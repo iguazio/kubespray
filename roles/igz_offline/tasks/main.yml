@@ -29,10 +29,10 @@
 
 - name: "init images cache name"
   set_fact:
-    container_cache_name: "docker_images.tar.bz2"
+    container_cache_name: "docker_images.tar.xz"
 
 - name: "save containers"
-  shell: "docker save {{ images_to_save }} | bzip2 -9 > {{ local_release_dir }}/{{ container_cache_name }}"
+  shell: "docker save {{ images_to_save }} | xz -9 > {{ local_release_dir }}/{{ container_cache_name }}"
   when:
   - not skip_downloads|default(false)
 
