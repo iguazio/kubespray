@@ -14,7 +14,7 @@ node('kubespray') {
         deleteDir()
         def scm_vars = checkout scm
         env.kubespray_hash = scm_vars.GIT_COMMIT
-        currentBuild.description = "hash = ${env.zoo_hash}"
+        currentBuild.description = "hash = ${env.kubespray_hash}"
     }
 
     def img_name = "kubespray:${env.kubespray_hash}"
