@@ -42,7 +42,6 @@ etcd_version: v3.2.26
 # kubernetes image repo define
 kube_image_repo: "gcr.io/google-containers"
 
-
 # TODO(mattymo): Move calico versions to roles/network_plugins/calico/defaults
 # after migration to container download
 calico_version: "v3.4.0"
