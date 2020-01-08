@@ -1,9 +1,57 @@
 ---
 
+- name: Get a list of DaemonSets in kube-system namespace
+  command: kubectl get ds -n kube-system
+  register: ds_list
+  tags:
+    - network
+
+- name: Ensure calico is istalled
+  set_fact:
+    installed_kube_network_plugin: calico
+  when: ds_list.stdout is search('calico')
+  tags:
+    - network
+
+- name: Ensure contiv is istalled
+  set_fact:
+    installed_kube_network_plugin: contiv
+  when: ds_list.stdout is search('contiv')
+  tags:
+    - network
+
+- name: Ensure cilium is istalled
+  set_fact:
+    installed_kube_network_plugin: cilium
+  when: ds_list.stdout is search('cilium')
+  tags:
+    - network
+
+- name: Ensure flannel is istalled
+  set_fact:
+    installed_kube_network_plugin: flannel
+  when: ds_list.stdout is search('flannel')
+  tags:
+    - network
+
+- name: Ensure kube-router is istalled
+  set_fact:
+    installed_kube_network_plugin: kube-router
+  when: ds_list.stdout is search('kube-router')
+  tags:
+    - network
+
 - name: reset | include file with pre-reset tasks specific to the network_plugin if exists
   include_tasks: "{{ (role_path + '/../network_plugin/' + kube_network_plugin + '/tasks/pre-reset.yml') | realpath  }}"
   when:
     - kube_network_plugin in ['contiv']
+  tags:
+    - network
+
+- name: reset | include file with pre-reset tasks specific to the network_plugin if exists
+  include_tasks: "{{ (role_path + '/../network_plugin/' + installed_kube_network_plugin + '/tasks/pre-reset.yml') | realpath  }}"
+  when:
+    - installed_kube_network_plugin is defined and installed_kube_network_plugin in ['contiv']
   tags:
     - network
 
@@ -283,6 +331,13 @@
   include_tasks: "{{ (role_path + '/../network_plugin/' + kube_network_plugin + '/tasks/reset.yml') | realpath  }}"
   when:
     - kube_network_plugin in ['flannel', 'cilium', 'contiv', 'kube-router', 'calico']
+  tags:
+    - network
+
+- name: reset | include file with reset tasks specific to the network_plugin if exists
+  include_tasks: "{{ (role_path + '/../network_plugin/' + installed_kube_network_plugin + '/tasks/reset.yml') | realpath  }}"
+  when:
+    - installed_kube_network_plugin is defined and installed_kube_network_plugin in ['flannel', 'cilium', 'contiv', 'kube-router', 'calico']
   tags:
     - network
 
