@@ -10,35 +10,35 @@
 - name: Ensure calico is istalled
   set_fact:
     installed_kube_network_plugin: calico
-  when: ds_list is not failed and ds_list.stdout is search('calico')
+  when: ds_list is succeeded and ds_list.stdout is search('calico')
   tags:
     - network
 
 - name: Ensure contiv is istalled
   set_fact:
     installed_kube_network_plugin: contiv
-  when: ds_list is not failed and ds_list.stdout is search('contiv')
+  when: ds_list is succeeded and ds_list.stdout is search('contiv')
   tags:
     - network
 
 - name: Ensure cilium is istalled
   set_fact:
     installed_kube_network_plugin: cilium
-  when: ds_list is not failed and ds_list.stdout is search('cilium')
+  when: ds_list is succeeded and ds_list.stdout is search('cilium')
   tags:
     - network
 
 - name: Ensure flannel is istalled
   set_fact:
     installed_kube_network_plugin: flannel
-  when: ds_list is not failed and ds_list.stdout is search('flannel')
+  when: ds_list is succeeded and ds_list.stdout is search('flannel')
   tags:
     - network
 
 - name: Ensure kube-router is istalled
   set_fact:
     installed_kube_network_plugin: kube-router
-  when: ds_list is not failed and ds_list.stdout is search('kube-router')
+  when: ds_list is succeeded and ds_list.stdout is search('kube-router')
   tags:
     - network
 
