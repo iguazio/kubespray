@@ -1,15 +1,22 @@
 FROM centos:7.6.1810
 
+ENV MITOGEN_POOL_SIZE=50
+
 RUN mkdir /kubespray
+
 WORKDIR /kubespray
-RUN yum install -y \
-    epel-release && yum install -y openssl-devel python-devel sshpass gcc \
-    ca-certificates curl gnupg2 python2-pip \
-    python36 vim python36-pip
+
+RUN yum install -y epel-release \
+    && yum install -y openssl-devel python-devel sshpass gcc ca-certificates curl gnupg2 python2-pip python36 python36-pip  \
+    && yum clean all \
+    && rm -rf /var/cache/yum
+
+COPY igz_requirements.txt ./igz_requirements.txt
+RUN /usr/bin/pip install -r igz_requirements.txt
+
+COPY contrib/inventory_builder/requirements.txt ./requirements.txt
+RUN /usr/bin/pip3 install -r requirements.txt
 
 COPY . .
-RUN /usr/bin/pip install -r igz_requirements.txt
-RUN /usr/bin/pip3 install -r contrib/inventory_builder/requirements.txt
-#RUN /usr/bin/python -m pip install pip -U && /usr/bin/python -m pip install pipenv && /usr/bin/python -m pip install -r tests/requirements.txt && python -m pip install -r requirements.txt
 
 ENTRYPOINT ["/kubespray/run.py"]
