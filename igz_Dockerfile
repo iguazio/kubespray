@@ -1,6 +1,7 @@
 FROM centos:7.6.1810
 
 ENV MITOGEN_POOL_SIZE=50
+ENV ANSIBLE_STRATEGY=mitogen_linear
 
 RUN mkdir /kubespray
 
