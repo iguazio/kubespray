@@ -4,6 +4,8 @@
   command: kubectl get ds -n kube-system
   register: ds_list
   ignore_errors: yes
+  run_once: yes
+  when: inventory_hostname in groups['kube-master']
   tags:
     - network
 
