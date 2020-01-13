@@ -1,7 +1,7 @@
 ---
 
 - name: Get a list of DaemonSets in kube-system namespace
-  command: kubectl get ds -n kube-system
+  command: "{{ bin_dir }}/kubectl get ds -n kube-system"
   register: ds_list
   ignore_errors: yes
   run_once: yes
