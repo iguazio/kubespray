@@ -31,3 +31,20 @@
         - "{{ ansible_distribution|lower }}.yml"
         - "{{ ansible_os_family|lower }}.yml"
       skip: true
+
+- name: set variables for calculation dynamic_kubelet_max_pods
+  set_fact:
+    cpu_weight: 0.5
+    memory_weight: 0.5
+    ## m5.2xlarge as base
+    cpu_const: 4
+    memory_const: 31117
+
+- name: Calcucalate possible value of kubelet_max_pods
+  set_fact:
+    dynamic_kubelet_max_pods: "{{ (((ansible_memtotal_mb / memory_const * cpu_weight) + (ansible_processor_cores / cpu_const * memory_weight)) * kubelet_max_pods)| int }}"
+
+- name: Ensure that dynamic_kubelet_max_pods not less than {{ kubelet_max_pods }}
+  set_fact:
+    dynamic_kubelet_max_pods: "{{ kubelet_max_pods }}"
+  when: kubelet_max_pods > dynamic_kubelet_max_pods
