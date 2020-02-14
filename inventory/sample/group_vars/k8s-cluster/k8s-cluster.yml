@@ -237,3 +237,7 @@ persistent_volumes_enabled: false
 kubelet_custom_flags:
   - "--image-gc-low-threshold=98"
   - "--image-gc-high-threshold=99"
+
+kube_pods_subnet: 10.200.0.0/13
+kube_service_addresses: 10.192.0.0/13
+kube_network_node_prefix: 22
