@@ -361,3 +361,11 @@
   tags:
     - services
     - network
+
+- name: Restart docker daemon
+  ignore_errors: yes
+  systemd:
+    name: docker
+    enabled: yes
+    state: restarted
+    daemon_reload: yes
