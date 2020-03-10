@@ -29,17 +29,17 @@ def _run_ansible(playbooks_dir, playbook, become=False, skip_tags=(), tags=(), *
     subprocess.check_call(cmd, cwd=playbooks_dir, stdout=sys.stdout, stderr=sys.stderr)
 
 
-def run(do_reset, servers_supp_ips):
+def run(do_reset, skip_k8s_install, servers_supp_ips):
     playbooks_dir = os.path.dirname(os.path.abspath(__file__))
     if do_reset:
         _run_ansible(playbooks_dir, 'reset_igz', become=True, kube_proxy_mode='iptables')
-
-    _run_ansible(playbooks_dir, 'offline_cache', become=True, release_cache_dir='./releases', skip_downloads=True)
-    _run_ansible(playbooks_dir, 'cluster', become=True, kubectl_localhost=True,
-                 kubeconfig_localhost=True, deploy_container_engine=False, skip_downloads=True,
-                 preinstall_selinux_state='disabled', kube_proxy_mode='iptables',
-                 supplementary_addresses_in_ssl_keys=servers_supp_ips)
-    _run_ansible(playbooks_dir, 'igz_post_install')
+    if not skip_k8s_install:
+        _run_ansible(playbooks_dir, 'offline_cache', become=True, release_cache_dir='./releases', skip_downloads=True)
+        _run_ansible(playbooks_dir, 'cluster', become=True, kubectl_localhost=True,
+                     kubeconfig_localhost=True, deploy_container_engine=False, skip_downloads=True,
+                     preinstall_selinux_state='disabled', kube_proxy_mode='iptables',
+                     supplementary_addresses_in_ssl_keys=servers_supp_ips)
+        _run_ansible(playbooks_dir, 'igz_post_install')
 
 
 def _k8s_node_ips(args):
@@ -64,6 +64,8 @@ def cli_parser():
     parser.add_argument('-a', '--apiserver_vip', dest='apiserver_vip', type=json.loads, default=[])
     parser.add_argument('-r', '--reset', action='store_true',
                         help='do reset before deploy, delete restart docker, dont run from within k8s cluster')
+    parser.add_argument('-ski', '--skip-k8s-install', action='store_true',
+                        help='do not install k8s after the reset')
     return parser.parse_args()
 
 
@@ -77,7 +79,7 @@ def main():
     servers_supp_ips = [supp_ip for _, _, supp_ip in args.servers]
     if args.apiserver_vip and 'ip_address' in args.apiserver_vip:
         servers_supp_ips.append(args.apiserver_vip['ip_address'])
-    run(args.reset, servers_supp_ips)
+    run(args.reset, args.skip_k8s_install, servers_supp_ips)
 
 
 if __name__ == '__main__':
