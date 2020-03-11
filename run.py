@@ -64,7 +64,7 @@ def cli_parser():
     parser.add_argument('-a', '--apiserver_vip', dest='apiserver_vip', type=json.loads, default=[])
     parser.add_argument('-r', '--reset', action='store_true',
                         help='do reset before deploy, delete restart docker, dont run from within k8s cluster')
-    parser.add_argument('-ski', '--skip-k8s-install', action='store_true',
+    parser.add_argument('-k', '--skip-k8s-install', action='store_true',
                         help='do not install k8s after the reset')
     return parser.parse_args()
 
