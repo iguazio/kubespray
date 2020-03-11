@@ -362,10 +362,11 @@
     - services
     - network
 
-- name: Restart docker daemon
-  ignore_errors: yes
+- name: reset | Restart docker daemon
   systemd:
     name: docker
     enabled: yes
     state: restarted
     daemon_reload: yes
+  ignore_errors: yes
+  when: container_manager == "docker"
