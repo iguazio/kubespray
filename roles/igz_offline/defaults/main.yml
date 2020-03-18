@@ -12,6 +12,10 @@ downloads:
     repo: "coredns/coredns"
     tag: "1.6.0"
 
+  k8s-dns-node-cache:
+    repo: "{{ google_containers }}/k8s-dns-node-cache"
+    tag: "1.15.5"
+
   cluster-proportional-autoscaler-amd64:
     repo: "k8s.gcr.io/cluster-proportional-autoscaler-amd64"
     tag: "1.6.0"
