@@ -62,6 +62,7 @@ def cli_parser():
     parser.add_argument('-s', '--server', dest='servers', type=_k8s_node_ips, action='append', default=[])
     parser.add_argument('-c', '--client', dest='clients', type=_validate_ip, action='append', default=[])
     parser.add_argument('-a', '--apiserver_vip', dest='apiserver_vip', type=json.loads, default=[])
+    parser.add_argument('-d', '--data-node', dest='datanodes', type=_validate_ip, action='append', default=[])
     parser.add_argument('-r', '--reset', action='store_true',
                         help='do reset before deploy, delete restart docker, dont run from within k8s cluster')
     parser.add_argument('-k', '--skip-k8s-install', action='store_true',
@@ -77,6 +78,10 @@ def main():
     servers = [(mgmt, data) for mgmt, data, _ in args.servers]
     gen_templates.from_cli(servers, args.clients, args.user, args.password, args.apiserver_vip)
     servers_supp_ips = [supp_ip for _, _, supp_ip in args.servers]
+    for _, data_ip, _ in args.servers:
+        servers_supp_ips.append(data_ip)
+    for ip in args.datanodes:
+        servers_supp_ips.append(ip)
     if args.apiserver_vip and 'ip_address' in args.apiserver_vip:
         servers_supp_ips.append(args.apiserver_vip['ip_address'])
     run(args.reset, args.skip_k8s_install, servers_supp_ips)

@@ -11,6 +11,20 @@
         state: restarted
       become: yes
 
+      # Without this fetch fails for some reason
+    - name: Change admin.conf permissions
+      shell: chmod 644 /etc/kubernetes/admin.conf
+      become: yes
+     
+    - name: Fetch admin.conf
+      fetch:
+        src: "/etc/kubernetes/admin.conf"
+        dest: "{{ inventory_dir }}/artifacts/named_admin.conf/"
+        mode: 0644
+        flat: yes
+      become: yes
+      run_once: yes
+
 - hosts: k8s-clients:k8s-cluster
   tasks:
     - name: "create .kube directory"
@@ -18,11 +32,16 @@
         path: "/home/{{ ansible_user }}/.kube"
         state: directory
 
-    - name: "Copy admin kube config file to node"
+    - name: Copy admin kube config file to node
       copy:
-        src: "{{ inventory_dir }}/artifacts/admin.conf"
-        dest: "/home/{{ ansible_user }}/.kube/config"
+        src: "{{ inventory_dir }}/artifacts/named_admin.conf/admin.conf"
+        dest: "/home/{{ ansible_user }}/.kube/"
         owner: "{{ ansible_user }}"
+        mode: 0644
+      become: yes
+
+    - name: Rename admin.conf to config
+      command: "mv /home/{{ ansible_user }}/.kube/admin.conf /home/{{ ansible_user }}/.kube/config"
 
     - name: Copy kubectl binary to client
       copy:
