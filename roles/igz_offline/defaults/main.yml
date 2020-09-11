@@ -1,6 +1,6 @@
 ---
 local_release_dir: /tmp/releases
-
+container_cache_name: "docker_images.tar.xz"
 google_containers: "gcr.io/google-containers"
 helm_version: "v3.2.4"
 calico_version: "v3.15.2"
