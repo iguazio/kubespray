@@ -2,39 +2,35 @@
 local_release_dir: /tmp/releases
 
 google_containers: "gcr.io/google-containers"
-helm_version: "v2.14.3"
-calico_version: "v3.7.3"
-weave_version: "2.5.2"
+helm_version: "v3.2.4"
+calico_version: "v3.15.2"
+weave_version: "2.7.0"
 
 downloads:
   # from roles/donwloads/defaults
   coredns:
     repo: "coredns/coredns"
-    tag: "1.6.0"
+    tag: "1.6.7"
 
   k8s-dns-node-cache:
     repo: "{{ google_containers }}/k8s-dns-node-cache"
-    tag: "1.15.5"
+    tag: "1.15.13"
 
   cluster-proportional-autoscaler-amd64:
     repo: "k8s.gcr.io/cluster-proportional-autoscaler-amd64"
-    tag: "1.6.0"
+    tag: "1.8.1"
 
   k8s-helm:
     repo: "lachlanevenson/k8s-helm"
     tag: "{{ helm_version }}"
 
-  tiller:
-    repo: "gcr.io/kubernetes-helm/tiller"
-    tag: "{{ helm_version }}"
-
   kubernetes-dashboard-amd64:
     repo: "gcr.io/google_containers/kubernetes-dashboard-amd64"
-    tag: "v1.10.1"
+    tag: "v2.0.4"
 
   etcd:
     repo: "quay.io/coreos/etcd"
-    tag: "v3.3.10"
+    tag: "v3.4.3"
 
   calico-node:
     repo: "calico/node"
@@ -62,7 +58,7 @@ downloads:
 
   nginx:
     repo: "nginx"
-    tag: "1.15"
+    tag: "1.19"
 
   pause-amd64:
     repo: "gcr.io/google_containers/pause-amd64"
@@ -91,7 +87,7 @@ downloads:
 
   pause:
     repo: "{{ google_containers }}/pause"
-    tag: "3.1"
+    tag: "3.2"
 
   # NVIDIA device plugin
   k8s-device-plugin:
