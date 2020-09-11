@@ -1,4 +1,11 @@
 ---
+- name: Check ansible version
+  import_playbook: ansible_version.yml
+
+- name: Gather facts
+  tags: always
+  import_playbook: facts.yml
+
 - hosts: k8s-cluster:etcd:calico-rr
   gather_facts: yes
   roles:
