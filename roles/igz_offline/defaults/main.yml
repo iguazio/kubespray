@@ -25,7 +25,7 @@ downloads:
     tag: "{{ helm_version }}"
 
   kubernetes-dashboard-amd64:
-    repo: "gcr.io/google_containers/kubernetes-dashboard-amd64"
+    repo: "docker.io/kubernetesui/dashboard-amd64"
     tag: "v2.0.4"
 
   etcd:
