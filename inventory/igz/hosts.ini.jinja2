@@ -5,9 +5,9 @@ ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 [all]
 {% for server in servers %}
 {% if server.has_etcd %}
-k8s-node{{ loop.index }} ansible_host={{ server.mgmt_ip }} user={{ server.user }} ansible_user={{ server.user }} ansible_ssh_pass={{ server.password }} ansible_sudo_pass={{ server.password }} ip={{ server.data_ip }} etcd_member_name=etcd{{ loop.index }}
+k8s-node{{ loop.index }} ansible_host={{ server.mgmt_ip }} user={{ server.user }} ansible_user={{ server.user }} ansible_ssh_pass={{ server.password }} ansible_become_password={{ server.password }} ip={{ server.data_ip }} etcd_member_name=etcd{{ loop.index }}
 {% else %}
-k8s-node{{ loop.index }} ansible_host={{ server.mgmt_ip }} user={{ server.user }} ansible_user={{ server.user }} ansible_ssh_pass={{ server.password }} ansible_sudo_pass={{ server.password }} ip={{ server.data_ip }}
+k8s-node{{ loop.index }} ansible_host={{ server.mgmt_ip }} user={{ server.user }} ansible_user={{ server.user }} ansible_ssh_pass={{ server.password }} ansible_become_password={{ server.password }} ip={{ server.data_ip }}
 {% endif %}
 {% endfor %}
 
@@ -39,5 +39,5 @@ kube-node
 
 [k8s-clients]
 {% for client in clients %}
-k8s-client{{ loop.index }} ansible_host={{ client.mgmt_ip }} user={{ client.user }} ansible_user={{ client.user }} ansible_ssh_pass={{ client.password }} ansible_sudo_pass={{ client.password }}
+k8s-client{{ loop.index }} ansible_host={{ client.mgmt_ip }} user={{ client.user }} ansible_user={{ client.user }} ansible_ssh_pass={{ client.password }} ansible_become_password={{ client.password }}
 {% endfor %}

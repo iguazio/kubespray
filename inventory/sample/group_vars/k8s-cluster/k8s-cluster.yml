@@ -322,5 +322,5 @@ persistent_volumes_enabled: false
 ## Amount of time to retain events. (default 1h0m0s)
 event_ttl_duration: "1h0m0s"
 kubelet_custom_flags:
-  - "--image-gc-low-threshold=100"
+  - "--image-gc-low-threshold=99"
   - "--image-gc-high-threshold=100"
