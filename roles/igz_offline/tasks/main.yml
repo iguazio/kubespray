@@ -20,7 +20,7 @@
 
 - name: create cache directory
   file:
-    path: "{{local_release_dir}}"
+    path: "{{ local_release_dir }}"
     state: directory
     recurse: yes
     mode: 0777
@@ -39,8 +39,8 @@
 
 - name: copy cache
   copy:
-    src: "{{release_cache_dir}}/"
-    dest: "{{local_release_dir}}"
+    src: "{{ release_cache_dir }}/"
+    dest: "{{ local_release_dir }}"
   when:
   - skip_downloads|default(false)
 

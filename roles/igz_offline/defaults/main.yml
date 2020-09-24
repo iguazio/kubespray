@@ -3,7 +3,6 @@ local_release_dir: /tmp/releases
 container_cache_name: "docker_images.tar.xz"
 google_containers: "gcr.io/google-containers"
 helm_version: "v3.2.4"
-calico_version: "v3.15.2"
 weave_version: "2.7.0"
 
 downloads:
@@ -31,22 +30,6 @@ downloads:
   etcd:
     repo: "quay.io/coreos/etcd"
     tag: "v3.4.3"
-
-  calico-node:
-    repo: "calico/node"
-    tag: "{{ calico_version }}"
-
-  calico-ctl:
-    repo: "calico/ctl"
-    tag: "{{ calico_version }}"
-
-  calico-kube-controllers:
-    repo: "calico/kube-controllers"
-    tag: "{{ calico_version }}"
-
-  calico-cni:
-    repo: "calico/cni"
-    tag: "{{ calico_version }}"
 
   weave_kube:
     repo: "docker.io/weaveworks/weave-kube"
