@@ -30,3 +30,17 @@
         dest: "{{ bin_dir }}/kubectl"
         mode: 0755
       become: yes
+
+    - name: Install kubectl bash completion
+      command: "{{ bin_dir }}/kubectl completion bash > /etc/bash_completion.d/kubectl.sh"
+      when: ansible_os_family in ['Debian', 'Ubuntu', 'RedHat']
+      become: yes
+
+    - name: Set kubectl bash completion file permissions
+      file:
+        path: /etc/bash_completion.d/kubectl.sh
+        owner: root
+        group: root
+        mode: 0755
+      when: ansible_os_family in ['Debian', 'Ubuntu', 'RedHat']
+      become: yes
