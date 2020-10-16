@@ -32,7 +32,7 @@
       become: yes
 
     - name: Install kubectl bash completion
-      command: "{{ bin_dir }}/kubectl completion bash > /etc/bash_completion.d/kubectl.sh"
+      shell: "{{ bin_dir }}/kubectl completion bash > /etc/bash_completion.d/kubectl.sh"
       when: ansible_os_family in ['Debian', 'Ubuntu', 'RedHat']
       become: yes
 
