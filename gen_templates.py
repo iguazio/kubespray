@@ -71,7 +71,7 @@ def gen(servers, clients, apiserver_vip):
     logging.info('generating template files')
     _gen_templates(path='inventory/igz/hosts.ini', servers=servers, clients=clients, apiserver_vip=apiserver_vip)
     _gen_templates(path='inventory/igz/group_vars/all/all.yml', servers=servers, clients=clients, apiserver_vip=apiserver_vip)
-    _gen_templates(path='inventory/igz/group_vars/k8s-cluster/k8s-master.yml', servers=servers, clients=clients, apiserver_vip=apiserver_vip)
+    _gen_templates(path='inventory/igz/group_vars/k8s-cluster/k8s-cluster.yml', servers=servers, clients=clients, apiserver_vip=apiserver_vip)
 
 
 def from_cli(servers, clients, user, password, apiserver_vip):
