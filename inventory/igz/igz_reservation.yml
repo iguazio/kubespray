@@ -1,0 +1,10 @@
+  kubeReservedCgroup: /systemd/system.slice
+  kubeletCgroups: /systemd/system.slice
+  runtimeCgroups: /systemd/system.slice
+  systemReservedCgroup: /system.slice
+  kubeReserved:
+    cpu: 200m
+    memory: 1G
+  systemReserved:
+    cpu: 2000m
+    memory: 5G

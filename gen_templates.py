@@ -54,6 +54,17 @@ def _gen_templates(path, **kwargs):
     with open(path, 'w') as fh:
         fh.write(generated_data)
 
+def add_igz_reservation():
+    with open('inventory/igz/igz_reservation.txt', 'r') as res:
+        igz_reservation = res.read()
+
+    with open('inventory/sample/group_vars/k8s-cluster/k8s-cluster.yml', 'r') as sample:
+        k8s_cluster = sample.read()
+
+    with open('inventory/igz/group_vars/k8s-cluster/k8s-cluster.yml', 'w') as target:
+        target.write(k8s_cluster)
+        target.write(igz_reservation)
+
 
 def get_servers(ips, user, password):
     masters_count = 3 if len(ips) >= 3 else 1
@@ -71,7 +82,8 @@ def gen(servers, clients, apiserver_vip):
     logging.info('generating template files')
     _gen_templates(path='inventory/igz/hosts.ini', servers=servers, clients=clients, apiserver_vip=apiserver_vip)
     _gen_templates(path='inventory/igz/group_vars/all/all.yml', servers=servers, clients=clients, apiserver_vip=apiserver_vip)
-    _gen_templates(path='inventory/igz/group_vars/k8s-cluster/k8s-cluster.yml', servers=servers, clients=clients, apiserver_vip=apiserver_vip)
+
+    add_igz_reservation()
 
 
 def from_cli(servers, clients, user, password, apiserver_vip):
