@@ -48,3 +48,11 @@
   shell: "docker load -i {{ local_release_dir }}/{{ container_cache_name }}"
   when:
   - skip_downloads|default(false)
+
+- name: cp kubectl with ver to static kubectl
+  copy:
+    src: "{{ local_release_dir }}/kubectl-{{ kube_version }}-{{ image_arch }}"
+    dest: "{{ local_release_dir }}/kubectl"
+    mode: "preserve"
+  when:
+    - not skip_downloads|default(false)
