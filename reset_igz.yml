@@ -1,4 +1,20 @@
 - hosts: etcd:k8s-cluster:calico-rr
+  pre_tasks:
+    - name: Remove invalid DNS records from /etc/hosts
+      lineinfile:
+        path: /etc/hosts
+        regexp: "{{ item }}"
+        owner: root
+        group: root
+        mode: 0644
+        state: absent
+        backup: yes
+      with_items:
+        - '^(.*)k8s_(.*)$'
+        - '^(.*)data_(.*)$'
+
+
   roles:
     - { role: kubespray-defaults}
     - { role: reset, tags: reset }
+
