@@ -17,4 +17,3 @@
   roles:
     - { role: kubespray-defaults}
     - { role: reset, tags: reset }
-
