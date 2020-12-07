@@ -17,3 +17,4 @@
         - ansible_all_ipv4_addresses
         - ansible_memtotal_mb
         - ansible_swaptotal_mb
+        - ansible_processor_cores
