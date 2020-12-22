@@ -250,7 +250,7 @@ podsecuritypolicy_enabled: false
 # kubelet_enforce_node_allocatable: pods
 
 ## Optionally reserve resources for OS system daemons.
-# system_reserved: true
+system_reserved: false
 ## Uncomment to override default values
 # system_memory_reserved: 512M
 # system_cpu_reserved: 500m
@@ -339,5 +339,5 @@ kubelet_config_extra_args:
     cpu: 200m
     memory: 1G
   systemReserved:
-    cpu: 2000m
+    cpu: 500m
     memory: 5G
