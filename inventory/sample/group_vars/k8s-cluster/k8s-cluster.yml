@@ -250,13 +250,18 @@ podsecuritypolicy_enabled: false
 # kubelet_enforce_node_allocatable: pods
 
 ## Optionally reserve resources for OS system daemons.
-system_reserved: false
+system_reserved: true
 ## Uncomment to override default values
-# system_memory_reserved: 512M
-# system_cpu_reserved: 500m
+system_memory_reserved: 5G
+system_cpu_reserved: 500m
+kube_cpu_reserved: 200m
+kube_memory_reserved: 1G
 ## Reservation for master hosts
-# system_master_memory_reserved: 256M
-# system_master_cpu_reserved: 250m
+system_master_memory_reserved: 5G
+system_master_cpu_reserved: 500m
+kube_master_cpu_reserved: 200m
+kube_master_memory_reserved: 1G
+
 
 # An alternative flexvolume plugin directory
 kubelet_flexvolumes_plugins_dir: /usr/libexec/kubernetes/kubelet-plugins/volume/exec
@@ -335,9 +340,3 @@ kubelet_config_extra_args:
   kubeletCgroups: /systemd/system.slice
   runtimeCgroups: /systemd/system.slice
   systemReservedCgroup: /system.slice
-  kubeReserved: 
-    cpu: 200m
-    memory: 1G
-  systemReserved:
-    cpu: 500m
-    memory: 5G
