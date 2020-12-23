@@ -69,7 +69,7 @@
   copy:
     src: "{{ release_cache_dir }}/calicoctl"
     dest: "/usr/local/bin/calicoctl"
-    mode: "preserve"
+    mode: "0755"
   when:
   - skip_downloads|default(false)
 
