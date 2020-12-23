@@ -67,9 +67,9 @@
 
 - name: "copy calicoctl to nodes"
   copy:
-    src: "{{ local_release_dir }}/calicoctl"
+    src: "{{ release_cache_dir }}/calicoctl"
     dest: "/usr/local/bin/calicoctl"
     mode: "preserve"
   when:
   - skip_downloads|default(false)
-  
+
