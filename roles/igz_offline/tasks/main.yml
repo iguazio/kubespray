@@ -49,10 +49,25 @@
   when:
   - skip_downloads|default(false)
 
-- name: cp kubectl with ver to static kubectl
+- name: copy kubectl with ver to static kubectl
   copy:
     src: "{{ local_release_dir }}/kubectl-{{ kube_version }}-{{ image_arch }}"
     dest: "{{ local_release_dir }}/kubectl"
     mode: "preserve"
   when:
     - not skip_downloads|default(false)
+
+- name: copy calicoctl to nodes
+  copy:
+    src: "{{ local_release_dir }}/calicoctl"
+    dest: "/usr/bin/local/calicoctl"
+    mode: "preserve"
+  when:
+    - not skip_downloads|default(false)
+
+- name: patch calicoctl.sh with canal certs
+  replace:
+    path: "{{ playbook_dir }}/roles/network_plugin/canal/templates/calicoctl.sh.j2"
+    regexp: "calico_cert_dir"
+    replace: "canal_cert_dir"
+    backup: yes
