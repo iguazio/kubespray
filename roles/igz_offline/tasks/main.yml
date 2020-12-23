@@ -53,7 +53,7 @@
   when:
     - not skip_downloads|default(false)
 
-- name: "copy cache"
+- name: "copy cache to nodes"
   copy:
     src: "{{ release_cache_dir }}/"
     dest: "{{ local_release_dir }}"
