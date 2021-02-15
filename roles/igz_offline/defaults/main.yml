@@ -35,13 +35,21 @@ downloads:
     repo: "quay.io/coreos/etcd"
     tag: "v3.4.3"
 
-  weave_kube:
-    repo: "docker.io/weaveworks/weave-kube"
-    tag: "{{ weave_version }}"
+  flannel:
+    repo: "{{ flannel_image_repo }}"
+    tag: "{{ flannel_image_tag }}"
 
-  weave_npc:
-    repo: "docker.io/weaveworks/weave-npc"
-    tag: "{{ weave_version }}"
+  calico_node:
+    repo: "{{ calico_cni_image_repo }}"
+    tag: "{{ calico_cni_image_tag }}"
+
+  calico_cni:
+    repo: "{{ calico_cni_image_repo }}"
+    tag: "{{ calico_cni_image_tag }}"
+
+  calico_policy:
+    repo: "{{ calico_policy_image_repo }}"
+    tag: "{{ calico_policy_image_tag }}"
 
   nginx:
     repo: "nginx"
