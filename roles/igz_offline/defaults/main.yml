@@ -23,10 +23,6 @@ downloads:
     repo: "lachlanevenson/k8s-helm"
     tag: "{{ helm_version }}"
 
-  kubernetes-dashboard-amd64:
-    repo: "docker.io/kubernetesui/dashboard-amd64"
-    tag: "v2.0.4"
-
   metrics-scraper:
     repo: "docker.io/kubernetesui/metrics-scraper"
     tag: "v1.0.5"
