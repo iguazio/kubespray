@@ -36,8 +36,8 @@ downloads:
     tag: "{{ flannel_image_tag }}"
 
   calico_node:
-    repo: "{{ calico_cni_image_repo }}"
-    tag: "{{ calico_cni_image_tag }}"
+    repo: "{{ calico_node_image_repo }}"
+    tag: "{{ calico_node_image_tag }}"
 
   calico_cni:
     repo: "{{ calico_cni_image_repo }}"
