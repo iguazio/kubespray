@@ -32,11 +32,6 @@
   when:
   - not skip_downloads|default(false)
 
-- name: "delete containers"
-  shell: "docker rmi {{ images_to_save }}"
-  when:
-  - not skip_downloads|default(false)
-
 - name: "copy kubectl with ver to static kubectl"
   copy:
     src: "{{ local_release_dir }}/kubectl-{{ kube_version }}-{{ image_arch }}"
