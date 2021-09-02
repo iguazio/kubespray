@@ -48,8 +48,8 @@ node('centos76') {
     }
 
     stage('upload to s3') {
-        def bucket = 'iguazio-versions-eu'
-        def bucket_region = 'eu-central-1'
+        def bucket = 'iguazio-versions'
+        def bucket_region = 'us-east-1'
         common.upload_to_s3(bucket, bucket_region, nas_image, "${rel_dir}/${output_name}")
     }
 }}}

@@ -3,4 +3,5 @@ jinja2==2.11.1
 netaddr
 pbr==5.4.4
 jmespath==0.9.5
+ruamel.yaml.clib==0.2.2
 ruamel.yaml==0.16.10
