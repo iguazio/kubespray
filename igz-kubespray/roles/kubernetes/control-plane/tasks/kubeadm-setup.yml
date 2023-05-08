@@ -151,7 +151,7 @@
 
 - name: kubeadm | Initialize first master
   command: >-
-    timeout -k 300s 300s
+    timeout -k 900s 900s
     {{ bin_dir }}/kubeadm init
     --config={{ kube_config_dir }}/kubeadm-config.yaml
     --ignore-preflight-errors=all
