@@ -1,7 +1,7 @@
 # ## Configure 'ip' variable to bind kubernetes services on a
 # ## different ip than the default iface
 # ## We should set etcd_member_name for etcd cluster. The node that is not a etcd member do not need to set the value, or can set the empty string value.
-ansible_python_interpreter='/usr/libexec/platform-python'
+ansible_python_interpreter='/usr/bin/python3.6'
 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 [all]
 {% for server in servers %}
