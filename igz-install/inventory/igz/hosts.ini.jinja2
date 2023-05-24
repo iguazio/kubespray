@@ -1,7 +1,6 @@
 # ## Configure 'ip' variable to bind kubernetes services on a
 # ## different ip than the default iface
 # ## We should set etcd_member_name for etcd cluster. The node that is not a etcd member do not need to set the value, or can set the empty string value.
-ansible_python_interpreter='/usr/bin/python3.6'
 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 [all]
 {% for server in servers %}
@@ -11,6 +10,9 @@ k8s-node{{ loop.index }} ansible_host={{ server.mgmt_ip }} user={{ server.user }
 k8s-node{{ loop.index }} ansible_host={{ server.mgmt_ip }} user={{ server.user }} ansible_user={{ server.user }} ansible_ssh_pass={{ server.password }} ansible_become_password={{ server.password }} ip={{ server.data_ip }}
 {% endif %}
 {% endfor %}
+
+[all:vars]
+ansible_python_interpreter='/usr/bin/python3.6'
 
 # ## configure a bastion host if your nodes are not directly reachable
 # bastion ansible_host=x.x.x.x ansible_user=some_user
