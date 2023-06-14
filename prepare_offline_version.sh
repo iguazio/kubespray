@@ -8,10 +8,10 @@ sudo rm -rf *
 sleep 20
 
 sudo chmod 777   ${BUILD_PATH}
-sudo chown  -R iguazio:iguazio ${BUILD_PATH}
+#sudo chown  -R iguazio:iguazio ${BUILD_PATH}
 
 cd ${WORKSPACE}
-
+sudo chmod 777  igz_files/*.sh
 sudo docker build -t kubespray-offline:${BRANCH_NAME} .
 sudo  docker run --rm -v ${BUILD_PATH}:/outputs -v /var/run/docker.sock:/var/run/docker.sock kubespray-offline:${BRANCH_NAME}
 sudo rm -rf kubespray-offline
