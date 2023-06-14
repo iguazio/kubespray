@@ -1,5 +1,5 @@
 @Library('pipelinex@_s3_python3') _
-
+//test
 
 timestamps {
 common.notify_slack {
@@ -28,7 +28,7 @@ node('centos76') {
     stage('save to nas') {
             common.shell(['mkdir', '-p', nas_dir])
             "ls -ltrh /mnt/nas/kubespray/${BRANCH_NAME}/"
-            sh("mv /mnt/nas/kubespray/${BRANCH_NAME}/outputs  ${nas_target}")
+            sh("mv /mnt/nas/kubespray_offline/${BRANCH_NAME}/outputs  ${nas_target}")
 
     }
 
