@@ -8,11 +8,11 @@ node('centos76') {
     stage('git clone') {
         deleteDir()
         def scm_vars = checkout scm
-        env.kubespray_offline_hash = scm_vars.GIT_COMMIT
-        currentBuild.description = "hash = ${env.kubespray_offline_hash}"
+        env.kubespray_hash = scm_vars.GIT_COMMIT
+        currentBuild.description = "hash = ${env.kubespray_hash}"
     }
 
-    def img_name = "kubespray:${env.kubespray_offline_hash}"
+    def img_name = "kubespray:${env.kubespray_hash}"
     def image = stage('build') {
         withCredentials([string(credentialsId: 'sudo_password', variable: 'sudo_password')]) {
         sh "ls -ltrh "
@@ -21,14 +21,14 @@ node('centos76') {
         }
     }
 
-    def rel_dir = "build_by_hash/kubespray_offline/${env.kubespray_offline_hash}/pkg/kubespray_offline"
+    def rel_dir = "build_by_hash/kubespray/${env.kubespray_hash}/pkg/kubespray"
     def nas_dir = "/mnt/nas/${rel_dir}"
 //     def output_name = 'kubespray.tar.xz'
     def nas_target = "${nas_dir}/"
     stage('save to nas') {
             common.shell(['mkdir', '-p', nas_dir])
-            "ls -ltrh /mnt/nas/kubespray_offline/${BRANCH_NAME}/"
-            sh("mv /mnt/nas/kubespray_offline/${BRANCH_NAME}/outputs  ${nas_target}")
+            "ls -ltrh /mnt/nas/kubespray/${BRANCH_NAME}/"
+            sh("mv /mnt/nas/kubespray/${BRANCH_NAME}/outputs  ${nas_target}")
 
     }
 
