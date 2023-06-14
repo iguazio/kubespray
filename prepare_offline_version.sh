@@ -1,50 +1,21 @@
-#!/usr/bin/env bash
+export BUILD_PATH="/mnt/nas/kubespray_offline/${BRANCH_NAME}/outputs"
 
-
-set -ex
-git submodule update --force --recursive --init
-
+sudo mkdir -p ${BUILD_PATH}
+cd  ${BUILD_PATH}
 pwd
-ls -ltrh
+echo "---->>>>delete all file in path ${BUILD_PATH} ....."
+rm -rf *
+sleep 20
 
-mv kubespray/* .
-cp -rp  igz-install/* .
-cp -rp igz-kubespray/* .
+sudo chmod 777   ${BUILD_PATH}
+sudo chown  -R iguazio:iguazio ${BUILD_PATH}
 
-cat inventory/local/hosts.ini
-echo "debug"
+cd ${WORKSPACE}
 
-password=${1}
-
-
-
-
-pipenv --python 3.6 install -r requirements.txt
-#pipenv --python 2.7.5 install -r requirements.txt
+docker build -t kubespray-offline:${BRANCH_NAME} .
+docker run --rm -v ${BUILD_PATH}:/outputs -v /var/run/docker.sock:/var/run/docker.sock kubespray-offline:${BRANCH_NAME}
+sudo rm -rf kubespray-offline
 
 
-export ANSIBLE_HOST_KEY_CHECKING=False && \
-  pipenv run ansible --become --become-user=root localhost -m debug -a "var=ansible_env.PATH"
-
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-
-
-
-
-export ANSIBLE_HOST_KEY_CHECKING=False && \
-  pipenv run ansible-playbook  --become --become-user=root -i inventory/local/hosts.ini offline_cache.yml \
-    -e 'local_release_dir=${WORKSPACE}/releases' -e '{ download_container: False }' \
-    -e '{ skip_downloads: False }' -e ansible_os_family=RedHat
-
-
-
-#password=${1}
-#
-#mkdir -p "${WORKSPACE}/releases"
-#
-#pipenv --python 2.7.5 install -r requirements.txt
-#export ANSIBLE_HOST_KEY_CHECKING=False && \
-#  pipenv run ansible-playbook -i inventory/local/hosts.ini offline_cache.yml \
-#    -e "local_release_dir=${WORKSPACE}/releases" -e '{ download_container: False }' \
-#    -e '{ skip_downloads: False }' -e ansible_os_family=RedHat
+echo "list dir:"
+ls ${BUILD_PATH}

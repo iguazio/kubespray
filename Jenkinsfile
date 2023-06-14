@@ -1,18 +1,5 @@
 @Library('pipelinex@_s3_python3') _
 
-def config = common.get_config()
-
-def props = [
-    buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '30', numToKeepStr: '1000')),
-    disableConcurrentBuilds()
-]
-
-if (config.cron.get(env.BRANCH_NAME)) {
-    props.add(pipelineTriggers([cron(config.cron.get(env.BRANCH_NAME))]))
-}
-
-properties(props)
-
 
 timestamps {
 common.notify_slack {
@@ -21,39 +8,39 @@ node('centos76') {
     stage('git clone') {
         deleteDir()
         def scm_vars = checkout scm
-        env.kubespray_hash = scm_vars.GIT_COMMIT
-        currentBuild.description = "hash = ${env.kubespray_hash}"
+        env.kubespray_offline_hash = scm_vars.GIT_COMMIT
+        currentBuild.description = "hash = ${env.kubespray_offline_hash}"
     }
 
-    def img_name = "kubespray:${env.kubespray_hash}"
+    def img_name = "kubespray:${env.kubespray_offline_hash}"
     def image = stage('build') {
         withCredentials([string(credentialsId: 'sudo_password', variable: 'sudo_password')]) {
-            common.shell(['./prepare_offline_version.sh', env.sudo_password])
+        sh "ls -ltrh "
+        sh "cd ${WORKSPACE} ; bash prepare_offline_version.sh"
+//             common.shell(['cd ${WORKSPACE} ; bash prepare_offline_version.sh', env.sudo_password])
         }
-
-        return docker.build(img_name, '--file igz_Dockerfile .')
     }
 
-    def rel_dir = "build_by_hash/kubespray/${env.kubespray_hash}/pkg/kubespray"
+    def rel_dir = "build_by_hash/kubespray_offline/${env.kubespray_offline_hash}/pkg/kubespray_offline"
     def nas_dir = "/mnt/nas/${rel_dir}"
-    def output_name = 'kubespray.tar.xz'
-    def nas_image = "${nas_dir}/${output_name}"
+//     def output_name = 'kubespray.tar.xz'
+    def nas_target = "${nas_dir}/"
     stage('save to nas') {
-        try {
             common.shell(['mkdir', '-p', nas_dir])
-            sh("docker save ${img_name} | xz -9 > ${nas_image}")
-        } finally {
-            common.shell(['docker', 'rmi', image.id])
-        }
+            "ls -ltrh /mnt/nas/kubespray_offline/${BRANCH_NAME}/"
+            sh("mv /mnt/nas/kubespray_offline/${BRANCH_NAME}/outputs  ${nas_target}")
+
     }
 
-    stage('upload to s3') {
-        def bucket = 'iguazio-versions'
-        def bucket_region = 'us-east-1'
-        sh"""
-        export LC_ALL=en_US.UTF-8
-        export LANG=en_US.UTF-8
-        """
-        common.upload_to_s3(bucket, bucket_region, nas_image, "${rel_dir}/${output_name}")
-    }
-}}}
+//     stage('upload to s3') {
+//         def bucket = 'iguazio-versions'
+//         def bucket_region = 'us-east-1'
+//         sh"""
+//         export LC_ALL=en_US.UTF-8
+//         export LANG=en_US.UTF-8
+//         """
+//         common.upload_to_s3(bucket, bucket_region, nas_image, "${rel_dir}/${output_name}")
+//     }
+}
+}
+}
