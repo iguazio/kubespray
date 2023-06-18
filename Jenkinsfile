@@ -27,7 +27,7 @@ node('centos76') {
     def nas_target = "${nas_dir}/${output_name}"
     stage('save to nas') {
             common.shell(['mkdir', '-p', nas_dir])
-            "ls -ltrh /mnt/nas/kubespray/${BRANCH_NAME}/"
+            "ls -ltrh /mnt/nas/kubespray_offline/${BRANCH_NAME}/"
             sh "cd /mnt/nas/kubespray_offline/${BRANCH_NAME}/ ; tar -cvf ${output_name} outputs"
             sh "cd /mnt/nas/kubespray_offline/${BRANCH_NAME}/ ; rm -rf  outputs"
             sh("mv /mnt/nas/kubespray_offline/${BRANCH_NAME}/${output_name}  ${nas_target}")
