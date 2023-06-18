@@ -30,23 +30,21 @@ else
 fi
 
 # Check pathes dir
-declare -a patches
-
 for file in "$PATCH_DIR"/*; do
   if [[ -f "$file" && "${file##*.}" != "patch" ]]; then
     echo "File $file does not have a .patch extension. Exiting."
     exit 1
-  else
-    echo "Found patch file $file"
-    patches+=("$file")
+  else echo "Found patch file $file"
   fi
 done
 
+# We apply the patches here mostly because of kube_version.patch otherwise the script will work on the default k8s version for current release
 # Apply all patches
-for patch in "${patchArray[@]}"; do
-  pushd $KUBESPRAY_DIR
-  patch --force --verbose -p1 < $patch || exit 1
-  popd
+for patch in ${PATCH_DIR}/*.patch; do
+  if [[ -f "${patch}" ]]; then
+    echo "===> Apply patch $patch"
+    (cd $KUBESPRAY_DIR && patch --force --verbose -p1 < $patch) || exit 1
+  fi
 done
 
 # Continue with the flow

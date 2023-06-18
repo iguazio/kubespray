@@ -19,10 +19,12 @@
 
         # If docker is installed but cannot be started we better stop here rather then letting Kubespray deploy on top of the leftovers
         # and be crippled after system start
-        - name: Fail if Docker is not running
-          fail:
-            msg: "Docker is not running! Manual intervention required!"
-          when: "services['docker.service'].state != 'running'"
+        - name: Check if docker service is running
+          command: systemctl is-active docker
+          register: result
+          until: result.stdout == "active"
+          retries: 5
+          delay: 2
 
         - name: Remove all Docker containers
           shell: "docker rm -f $(docker ps -aq)"
